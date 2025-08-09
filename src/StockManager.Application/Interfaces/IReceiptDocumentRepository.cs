@@ -9,4 +9,5 @@ public interface IReceiptDocumentRepository
     Task<ReceiptDocument?> GetByIdWithResourcesAsync(long id);
     Task<ReceiptDocument> GetByIdAsync(long receiptDocumentId);
     Task DeleteAsync(long receiptDocumentId);
+    Task UpdateReceiptDocumentAsync(ReceiptDocument receiptDocument);
 }

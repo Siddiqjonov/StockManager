@@ -44,4 +44,11 @@ public class ReceiptDocumentRepository : IReceiptDocumentRepository
         _context.ReceiptDocuments.Remove(receiptDocument);
         await _context.SaveChangesAsync();
     }
+
+    public async Task UpdateReceiptDocumentAsync(ReceiptDocument receiptDocument)
+    {
+        await GetByIdAsync(receiptDocument.Id);
+        _context.ReceiptDocuments.Update(receiptDocument);
+        await _context.SaveChangesAsync();
+    }
 }

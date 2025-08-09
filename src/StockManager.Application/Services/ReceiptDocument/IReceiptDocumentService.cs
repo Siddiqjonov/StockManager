@@ -4,5 +4,5 @@ namespace StockManager.Application.Services.ReceiptDocument;
 
 public interface IReceiptDocumentService
 {
-    Task<long> CreateAsync(ReceiptDocumentCreateDto receiptDocumentCreateDto);
+    Task<long> CreateAsync(ReceiptDocumentCreateDto dto);
 }
