@@ -7,6 +7,7 @@ public class MeasurementUnitCreateDtoValidator : AbstractValidator<MeasurementUn
 {
     public MeasurementUnitCreateDtoValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Название единицы измерения обязательно.")
+                            .MaximumLength(100).WithMessage("Название слишком длинное.");
     }
 }

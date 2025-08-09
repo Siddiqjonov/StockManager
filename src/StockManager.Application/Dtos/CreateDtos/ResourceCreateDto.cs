@@ -2,6 +2,5 @@
 
 public class ResourceCreateDto
 {
-    public string Name { get; set; }
-    public bool IsActive { get; set; } = true;
+    public string Name { get; set; } = null!;
 }

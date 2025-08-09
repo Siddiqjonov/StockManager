@@ -2,7 +2,6 @@
 
 public class ClientCreateDto
 {
-    public string Name { get; set; }
-    public string Address { get; set; }
-    public bool IsActive { get; set; } = true;
+    public string Name { get; set; } = null!;
+    public string Address { get; set; } = null!;
 }

@@ -7,6 +7,7 @@ public class ResourceCreateDtoValidator : AbstractValidator<ResourceCreateDto>
 {
     public ResourceCreateDtoValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Название ресурса обязательно.")
+                            .MaximumLength(200).WithMessage("Название ресурса слишком длинное.");
     }
 }
