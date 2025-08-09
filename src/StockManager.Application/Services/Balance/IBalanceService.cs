@@ -1,6 +1,5 @@
-﻿namespace StockManager.Application.Services.Balance
+﻿namespace StockManager.Application.Services.Balance;
+
+public interface IBalanceService
 {
-    public interface IBalanceService
-    {
-    }
 }

@@ -26,7 +26,7 @@ public class ClientService : IClientService
         if (await _repository.ExistsByNameAsync(clientCreateDto.Name))
             throw new DuplicateEntryException($"Клиент с наименованием '{clientCreateDto.Name}' уже существует.");
 
-        var entity = Mapper.MapToClientFromDto(clientCreateDto);
-        return await _repository.AddAsync(entity);
+        var client = Mapper.MapToClientFromClientCreateDto(clientCreateDto);
+        return await _repository.AddAsync(client);
     }
 }
