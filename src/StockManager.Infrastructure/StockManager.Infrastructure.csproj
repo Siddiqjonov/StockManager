@@ -23,4 +23,8 @@
     <ProjectReference Include="..\StockManager.Domain\StockManager.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Repositories\" />
+  </ItemGroup>
+
 </Project>
