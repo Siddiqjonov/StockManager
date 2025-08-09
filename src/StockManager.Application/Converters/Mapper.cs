@@ -50,7 +50,14 @@ public static class Mapper
             Number = dto.Number,
             ClientId = dto.ClientId,
             Date = dto.Date,
-            Status = (DocumentStatus)DocumentStatusDto.Draft,
+            Status = (DocumentStatus)dto.Status,
+            IsSigned = false, // enforce default false on create
+            Resources = dto.Resources.Select(r => new ShipmentResource
+            {
+                ResourceId = r.ResourceId,
+                MeasurementUnitId = r.MeasurementUnitId,
+                Quantity = r.Quantity
+            }).ToList()
         };
     }
 }

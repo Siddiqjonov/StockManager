@@ -6,4 +6,5 @@ public interface IMeasurementUnitRepository
 {
     Task<bool> ExistsByNameAsync(string name);
     Task<long> AddAsync(MeasurementUnit measurementUnit);
+    Task<bool> IsUsedAsync(long id);
 }

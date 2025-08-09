@@ -31,4 +31,19 @@ public class ResourceService : IResourceService
         var resourceId = await _repository.AddAsync(resource);
         return resourceId;
     }
+
+    public async Task ArchiveAsync(long id)
+    {
+        var ctx = await _repository.GetByIdAsync(id);
+        if (ctx == null) throw new EntityNotFoundException($"Ресурс с идентификатором: {id} не найден.");
+
+        if (await _repository.IsUsedAsync(id))
+        {
+            ctx.Status = Domain.Enums.EntityStatus.Archived;
+            await _repository.UpdateResouceAsync(ctx);
+            return;
+        }
+
+        await _repository.DeleteResourceAsync(ctx.Id);
+    }
 }

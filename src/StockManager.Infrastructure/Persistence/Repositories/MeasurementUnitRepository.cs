@@ -25,4 +25,12 @@ public class MeasurementUnitRepository : IMeasurementUnitRepository
         await _context.SaveChangesAsync();
         return measurementUnit.Id;
     }
+    public async Task<bool> IsUsedAsync(long id)
+    {
+        var isUsed = 
+            await _context.Balances.AnyAsync(b => b.MeasurementUnitId == id)
+        || await _context.ReceiptResources.AnyAsync(rr => rr.MeasurementUnitId == id)
+        || await _context.ShipmentResources.AnyAsync(sr => sr.MeasurementUnitId == id);
+        return isUsed;
+    }
 }

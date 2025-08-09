@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StockManager.Application.Errors;
 using StockManager.Application.Interfaces;
 using StockManager.Domain.Entities;
 using StockManager.Infrastructure.Persistence.DataContext;
@@ -24,5 +25,23 @@ public class ReceiptDocumentRepository : IReceiptDocumentRepository
         await _context.ReceiptDocuments.AddAsync(receiptDocument);
         await _context.SaveChangesAsync();
         return receiptDocument.Id;
+    }
+
+    public async Task<ReceiptDocument?> GetByIdWithResourcesAsync(long id)
+    {
+        return await _context.ReceiptDocuments.Include(r => r.Resources).FirstOrDefaultAsync(r => r.Id == id);
+    }
+
+    public async Task<ReceiptDocument> GetByIdAsync(long receiptDocumentId)
+    {
+        return await _context.ReceiptDocuments.FirstOrDefaultAsync(rD => rD.Id == receiptDocumentId)
+            ?? throw new NotFoundException($"Документ о получении с идентификатором {receiptDocumentId} не найден");
+    }
+
+    public async Task DeleteAsync(long receiptDocumentId)
+    {
+        var receiptDocument = await GetByIdAsync(receiptDocumentId);
+        _context.ReceiptDocuments.Remove(receiptDocument);
+        await _context.SaveChangesAsync();
     }
 }

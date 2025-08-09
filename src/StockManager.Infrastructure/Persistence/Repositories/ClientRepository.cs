@@ -25,4 +25,9 @@ public class ClientRepository : IClientRepository
         await _context.SaveChangesAsync();
         return client.Id;
     }
+
+    public async Task<bool> IsUsedAsync(long id)
+    {
+        return await _context.ShipmentDocuments.AnyAsync(sd => sd.ClientId == id);
+    }
 }
