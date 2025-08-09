@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="FluentValidations\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
