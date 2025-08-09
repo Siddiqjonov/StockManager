@@ -29,4 +29,19 @@ public class MeasurementUnitService : IMeasurementUnitService
         var measurementUnit = Mapper.MapToMeasurementUnitFromMeasurementUnitCreateDto(measurementUnitCreateDto);
         return await _repository.AddAsync(measurementUnit);
     }
+
+    public async Task ArchiveAsync(long id)
+    {
+        var ctx = await _repository.GetMeasurementUnitByIdAsync(id);
+        if (ctx == null) throw new EntityNotFoundException($"MeasurementUnit {id} not found.");
+
+        if (await _repository.IsUsedAsync(id))
+        {
+            ctx.Status = Domain.Enums.EntityStatus.Archived;
+            await _repository.UpdateMeasurementUnitAsync(ctx);
+            return;
+        }
+
+        await _repository.DeleteMeasurementUnitAsync(ctx.Id);
+    }
 }

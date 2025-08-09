@@ -29,4 +29,19 @@ public class ClientService : IClientService
         var client = Mapper.MapToClientFromClientCreateDto(clientCreateDto);
         return await _repository.AddAsync(client);
     }
+
+    public async Task ArchiveAsync(long id)
+    {
+        var ctx = await _repository.GetClientByIdAsync(id);
+        if (ctx == null) throw new EntityNotFoundException($"Client {id} not found.");
+
+        if (await _repository.IsUsedAsync(id))
+        {
+            ctx.Status = Domain.Enums.EntityStatus.Archived;
+            await _repository.UpdateClientAsync(ctx);
+            return;
+        }
+
+        await _repository.DeleteClientAsync(ctx.Id);
+    }
 }

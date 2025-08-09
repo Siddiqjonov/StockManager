@@ -7,4 +7,7 @@ public interface IClientRepository
     Task<bool> ExistsByNameAsync(string name);
     Task<long> AddAsync(Client client);
     Task<bool> IsUsedAsync(long id);
+    Task<Client?> GetClientByIdAsync(long clientId);
+    Task UpdateClientAsync(Client client);
+    Task DeleteClientAsync(long clientId);
 }

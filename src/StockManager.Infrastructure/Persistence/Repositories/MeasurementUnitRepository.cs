@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StockManager.Application.Errors;
 using StockManager.Application.Interfaces;
 using StockManager.Domain.Entities;
 using StockManager.Infrastructure.Persistence.DataContext;
@@ -32,5 +33,38 @@ public class MeasurementUnitRepository : IMeasurementUnitRepository
         || await _context.ReceiptResources.AnyAsync(rr => rr.MeasurementUnitId == id)
         || await _context.ShipmentResources.AnyAsync(sr => sr.MeasurementUnitId == id);
         return isUsed;
+    }
+
+    public async Task<MeasurementUnit?> GetMeasurementUnitByIdAsync(long measurementUnitId)
+    {
+        return await _context.MeasurementUnits
+            .Include(mu => mu.Balances)
+            .Include(mu => mu.ReceiptResources)
+            .Include(mu => mu.ShipmentResources)
+            .FirstOrDefaultAsync(mu => mu.Id == measurementUnitId);
+    }
+
+    public async Task UpdateMeasurementUnitAsync(MeasurementUnit measurementUnit)
+    {
+        var measurementUnitFromDb = await GetMeasurementUnitByIdAsync(measurementUnit.Id);
+        if (measurementUnitFromDb != null)
+        {
+            _context.MeasurementUnits.Update(measurementUnit);
+            await _context.SaveChangesAsync();
+        }
+        else
+            throw new NotFoundException($"Единица измерения с идентификатором: {measurementUnit.Id} не найдена для обновления");
+    }
+
+    public async Task DeleteMeasurementUnitAsync(long measurementUnitId)
+    {
+        var measurementUnitFromDb = await GetMeasurementUnitByIdAsync(measurementUnitId);
+        if (measurementUnitFromDb != null)
+        {
+            _context.MeasurementUnits.Remove(measurementUnitFromDb);
+            await _context.SaveChangesAsync();
+        }
+        else
+            throw new NotFoundException($"Единица измерения с идентификатором: {measurementUnitId} не найдена для удаления");
     }
 }
