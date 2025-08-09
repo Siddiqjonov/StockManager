@@ -1,5 +1,5 @@
 ﻿namespace StockManager.Application.Services.Measurement;
 
-public class MeasurementService : IMeasurementService
+public interface IMeasurementUnitService
 {
 }

@@ -4,5 +4,5 @@ public enum DocumentStatus
 {
     Draft,
     Signed,
-    Revoked
+    Revoked,
 }

@@ -3,5 +3,5 @@
 public enum EntityStatus
 {
     Active,
-    Archived
+    Archived,
 }
