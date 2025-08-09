@@ -16,4 +16,8 @@ public static class DependencyInjectionConfiguration
         builder.Services.AddScoped<IShipmentDocumentRepository, ShipmentDocumentRepository>();
         builder.Services.AddScoped<IShipmentResourceRepository, ShipmentResourceRepository>();
     }
+    public static void RegisterServices(this WebApplicationBuilder builder)
+    {
+
+    }
 }

@@ -12,9 +12,23 @@ public static class Program
         // Add services to the container.
         builder.ConfigureSqlServerDatabase();
         builder.RegisterRepositories();
+        builder.RegisterServices();
 
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
+
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+        builder.Services.AddProblemDetails();
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -29,8 +43,10 @@ public static class Program
 
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
+        app.UseHttpsRedirection();
+        app.UseCors("AllowAll");
 
+        app.UseAuthorization();
 
         app.MapControllers();
 
