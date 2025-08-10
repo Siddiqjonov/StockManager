@@ -1,5 +1,7 @@
 ﻿using StockManager.Application.Converters;
 using StockManager.Application.Dtos.CreateDtos;
+using StockManager.Application.Dtos.Filters;
+using StockManager.Application.Dtos.GetDtos;
 using StockManager.Application.Errors;
 using StockManager.Application.FluentValidations;
 using StockManager.Application.Interfaces;
@@ -45,5 +47,25 @@ public class ResourceService : IResourceService
         }
 
         await _repository.DeleteResourceAsync(ctx.Id);
+    }
+
+    public Task<ResourceReadDto?> GetByIdAsync(long id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<ResourceReadDto>> GetAllAsync(ResourceFilterDto filter)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateAsync(long id, ResourceUpdateDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteAsync(long id)
+    {
+        throw new NotImplementedException();
     }
 }
