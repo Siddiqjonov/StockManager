@@ -57,4 +57,12 @@ public class ClientRepository : IClientRepository
         _context.Clients.Remove(clientFromDb);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<Client?> ExistsByIdAsync(long id)
+    {
+        return await _context.Clients
+            .Include(c => c.ShipmentDocuments)
+            .FirstOrDefaultAsync(c => c.Id == id) 
+            ?? throw new NotFoundException($"Клиент с идентификатором: {id} не найден");
+    }
 }

@@ -10,4 +10,5 @@ public interface IClientRepository
     Task<Client?> GetClientByIdAsync(long clientId);
     Task UpdateClientAsync(Client client);
     Task DeleteClientAsync(long clientId);
+    Task<Client?> ExistsByIdAsync(long id);
 }

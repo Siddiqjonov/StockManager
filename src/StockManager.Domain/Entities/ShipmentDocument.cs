@@ -9,6 +9,7 @@ public class ShipmentDocument
     public long ClientId { get; set; }
     public DateTime Date { get; set; }
     public DocumentStatus Status { get; set; }
+    public bool IsSigned { get; set; } = false;
 
     public Client Client { get; set; }
     public ICollection<ShipmentResource> Resources { get; set; }

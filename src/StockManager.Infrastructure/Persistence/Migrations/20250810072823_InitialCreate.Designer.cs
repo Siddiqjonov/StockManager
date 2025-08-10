@@ -12,7 +12,7 @@ using StockManager.Infrastructure.Persistence.DataContext;
 namespace StockManager.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20250809071126_InitialCreate")]
+    [Migration("20250810072823_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -199,6 +199,9 @@ namespace StockManager.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsSigned")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Number")
                         .IsRequired()

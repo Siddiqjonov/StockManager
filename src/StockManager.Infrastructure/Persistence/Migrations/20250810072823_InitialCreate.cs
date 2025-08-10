@@ -77,7 +77,8 @@ namespace StockManager.Infrastructure.Persistence.Migrations
                     Number = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ClientId = table.Column<long>(type: "bigint", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsSigned = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
