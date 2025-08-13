@@ -46,6 +46,8 @@ public static class Program
         app.UseHttpsRedirection();
         app.UseCors("AllowAll");
 
+        app.UseExceptionHandler();
+
         app.UseAuthorization();
 
         app.MapControllers();

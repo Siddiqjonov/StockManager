@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockManager.Application.Dtos.CreateDtos;
+using StockManager.Application.Dtos.Filters;
+using StockManager.Application.Dtos.UpdateDtos;
 using StockManager.Application.Services.Client;
 
 namespace StockManager.Presentation.Controllers;
@@ -57,5 +59,4 @@ public class ClientsController : ControllerBase
         await _clientService.DeleteAsync(id);
         return NoContent();
     }
-}
 }

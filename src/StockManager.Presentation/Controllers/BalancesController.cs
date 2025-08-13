@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StockManager.Application.Dtos.Filters;
 using StockManager.Application.Services.Balance;
 
 namespace StockManager.Presentation.Controllers;

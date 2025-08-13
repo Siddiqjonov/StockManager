@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockManager.Application.Dtos.CreateDtos;
+using StockManager.Application.Dtos.Filters;
 using StockManager.Application.Dtos.UpdateDtos;
 using StockManager.Application.Services.ReceiptDocument;
 
@@ -39,9 +40,9 @@ public class ReceiptsController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
-    public async Task<IActionResult> Update(long id, [FromBody] ReceiptDocumentUpdateDto dto)
+    public async Task<IActionResult> Update([FromBody] ReceiptDocumentUpdateDto dto)
     {
-        await _receiptService.UpdateAsync(id, dto);
+        await _receiptService.UpdateAsync(dto);
         return NoContent();
     }
 

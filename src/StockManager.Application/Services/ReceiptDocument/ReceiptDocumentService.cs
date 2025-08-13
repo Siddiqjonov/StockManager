@@ -1,5 +1,7 @@
 ﻿using StockManager.Application.Converters;
 using StockManager.Application.Dtos.CreateDtos;
+using StockManager.Application.Dtos.Filters;
+using StockManager.Application.Dtos.GetDtos;
 using StockManager.Application.Dtos.UpdateDtos;
 using StockManager.Application.Errors;
 using StockManager.Application.FluentValidations;
@@ -75,10 +77,61 @@ public class ReceiptDocumentService : IReceiptDocumentService
         await _receiptRepo.DeleteAsync(doc.Id);
     }
 
-    public async Task UpdateAsync(long id, ReceiptDocumentUpdateDto dto)
+    public async Task<IEnumerable<ReceiptDocumentReadDto>> GetAllAsync(ReceiptFilterDto filter)
     {
-        var existing = await _receiptRepo.GetByIdWithResourcesAsync(id)
-            ?? throw new EntityNotFoundException($"Receipt {id} not found.");
+        var list = await _receiptRepo.GetAllWithResourcesAsync();
+        var q = list.AsQueryable();
+
+        if (filter.From.HasValue) q = q.Where(d => d.Date >= filter.From.Value);
+        if (filter.To.HasValue) q = q.Where(d => d.Date <= filter.To.Value);
+        if (filter.Numbers != null && filter.Numbers.Any()) q = q.Where(d => filter.Numbers.Contains(d.Number));
+        if (filter.ResourceIds != null && filter.ResourceIds.Any())
+            q = q.Where(d => d.Resources.Any(r => filter.ResourceIds.Contains(r.ResourceId)));
+        if (filter.MeasurementUnitIds != null && filter.MeasurementUnitIds.Any())
+            q = q.Where(d => d.Resources.Any(r => filter.MeasurementUnitIds.Contains(r.MeasurementUnitId)));
+
+        return q.Select(entity => new ReceiptDocumentReadDto
+        {
+            Id = entity.Id,
+            Number = entity.Number,
+            Date = entity.Date,
+            //Status = entity.Status.ToString(),
+            Resources = entity.Resources.Select(r => new ReceiptResourceReadDto
+            {
+                ResourceId = r.ResourceId,
+                ResourceName = r.Resource.Name,
+                MeasurementUnitId = r.MeasurementUnitId,
+                MeasurementUnitName = r.MeasurementUnit.Name,
+                Quantity = r.Quantity
+            }).ToList()
+        }).ToList();
+    }
+
+    public async Task<ReceiptDocumentReadDto?> GetByIdAsync(long id)
+    {
+        var entity = await _receiptRepo.GetByIdWithResourcesAsync(id);
+        if (entity == null) return null;
+        var dto = new ReceiptDocumentReadDto
+        {
+            Id = entity.Id,
+            Number = entity.Number,
+            Date = entity.Date,
+            Resources = entity.Resources.Select(r => new ReceiptResourceReadDto
+            {
+                ResourceId = r.ResourceId,
+                ResourceName = r.Resource.Name,
+                MeasurementUnitId = r.MeasurementUnitId,
+                MeasurementUnitName = r.MeasurementUnit.Name,
+                Quantity = r.Quantity
+            }).ToList()
+        };
+        return dto;
+    }
+
+    public async Task UpdateAsync(ReceiptDocumentUpdateDto dto)
+    {
+        var existing = await _receiptRepo.GetByIdWithResourcesAsync(dto.Id)
+            ?? throw new EntityNotFoundException($"Ресурс {dto.Id} не найден.");
 
         var validator = new ReceiptDocumentUpdateDtoValidator();
         var result = validator.Validate(dto);

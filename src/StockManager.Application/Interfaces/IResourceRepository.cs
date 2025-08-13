@@ -10,4 +10,5 @@ public interface IResourceRepository
     Task<Resource?> GetByIdAsync(long id);
     Task UpdateResouceAsync(Resource resource);
     Task DeleteResourceAsync(long resourceId);
+    Task<IEnumerable<Resource>> GetAllAsync();
 }

@@ -66,4 +66,13 @@ public class ResourceRepository : IResourceRepository
         else
             throw new NotFoundException($"Ресурс с идентификатором: {resourceId} не найден для удаления");
     }
+
+    public Task<IEnumerable<Resource>> GetAllAsync()
+    {
+        return Task.FromResult<IEnumerable<Resource>>(_context.Resources
+            .Include(r => r.Balances)
+            .Include(r => r.ReceiptResources)
+            .Include(r => r.ShipmentResources)
+            .ToList());
+    }
 }

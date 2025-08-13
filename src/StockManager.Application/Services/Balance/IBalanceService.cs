@@ -1,4 +1,7 @@
-﻿namespace StockManager.Application.Services.Balance;
+﻿using StockManager.Application.Dtos.Filters;
+using StockManager.Application.Dtos.GetDtos;
+
+namespace StockManager.Application.Services.Balance;
 
 public interface IBalanceService
 {

@@ -1,5 +1,8 @@
 ﻿using StockManager.Application.Converters;
 using StockManager.Application.Dtos.CreateDtos;
+using StockManager.Application.Dtos.Filters;
+using StockManager.Application.Dtos.GetDtos;
+using StockManager.Application.Dtos.UpdateDtos;
 using StockManager.Application.Errors;
 using StockManager.Application.FluentValidations;
 using StockManager.Application.Interfaces;
@@ -97,5 +100,25 @@ public class ShipmentDocumentService : IShipmentDocumentService
         doc.IsSigned = false;
         doc.Status = Domain.Enums.DocumentStatus.Revoked;
         await _shipmentRepo.UpdateAsync(doc);
+    }
+
+    public Task<ShipmentDocumentReadDto?> GetByIdAsync(long id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<ShipmentDocumentReadDto>> GetAllAsync(ShipmentFilterDto filter)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateAsync(long id, ShipmentDocumentUpdateDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteAsync(long id)
+    {
+        throw new NotImplementedException();
     }
 }

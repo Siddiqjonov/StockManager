@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockManager.Application.Dtos.CreateDtos;
+using StockManager.Application.Dtos.Filters;
+using StockManager.Application.Dtos.UpdateDtos;
 using StockManager.Application.Services.Resource;
 
 namespace StockManager.Presentation.Controllers;
@@ -38,9 +40,9 @@ public class ResourcesController : ControllerBase
     }
 
     [HttpPut("{id:long}")]
-    public async Task<IActionResult> Update(long id, [FromBody] ResourceUpdateDto dto)
+    public async Task<IActionResult> Update([FromBody] ResourceUpdateDto dto)
     {
-        await _resourceService.UpdateAsync(id, dto);
+        await _resourceService.UpdateAsync(dto);
         return NoContent();
     }
 

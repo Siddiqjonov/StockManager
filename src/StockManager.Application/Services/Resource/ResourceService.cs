@@ -2,6 +2,7 @@
 using StockManager.Application.Dtos.CreateDtos;
 using StockManager.Application.Dtos.Filters;
 using StockManager.Application.Dtos.GetDtos;
+using StockManager.Application.Dtos.UpdateDtos;
 using StockManager.Application.Errors;
 using StockManager.Application.FluentValidations;
 using StockManager.Application.Interfaces;
@@ -49,23 +50,52 @@ public class ResourceService : IResourceService
         await _repository.DeleteResourceAsync(ctx.Id);
     }
 
-    public Task<ResourceReadDto?> GetByIdAsync(long id)
+    public async Task DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        var exsisting = await _repository.GetByIdAsync(id);
+        if (exsisting == null)
+            throw new EntityNotFoundException($"Ресурс {id} не найден.");
+        if (await _repository.IsUsedAsync(id))
+            throw new InvalidStateException("Ресурс используется и не может быть удален; вместо этого заархивируйте его.");
+        await _repository.DeleteResourceAsync(id);
     }
 
-    public Task<IEnumerable<ResourceReadDto>> GetAllAsync(ResourceFilterDto filter)
+    public async Task<ResourceReadDto?> GetByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var entity = await _repository.GetByIdAsync(id);
+        if (entity == null) return null;
+        return new ResourceReadDto
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            Status = entity.Status.ToString()
+        };
     }
 
-    public Task UpdateAsync(long id, ResourceUpdateDto dto)
+    public async Task<IEnumerable<ResourceReadDto>> GetAllAsync(ResourceFilterDto filter)
     {
-        throw new NotImplementedException();
+        var list = await _repository.GetAllAsync();
+        var q = list.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(filter?.Search))
+            q = q.Where(r => r.Name.Contains(filter.Search, StringComparison.OrdinalIgnoreCase));
+        if (filter?.OnlyActive == true)
+            q = q.Where(r => r.Status.ToString() == "Active");
+        return q.Select(e => new ResourceReadDto { Id = e.Id, Name = e.Name, Status = e.Status.ToString() }).ToList();
     }
-
-    public Task DeleteAsync(long id)
+    public async Task UpdateAsync(ResourceUpdateDto dto)
     {
-        throw new NotImplementedException();
+        var validator = new ResourceCreateDtoValidator();
+        var result = validator.Validate(new Dtos.CreateDtos.ResourceCreateDto { Name = dto.Name });
+        if (!result.IsValid)
+            throw new ValidationFailedException(string.Join("; ", result.Errors.Select(e => e.ErrorMessage)));
+
+        var existing = await _repository.GetByIdAsync(dto.Id) ?? throw new EntityNotFoundException($"Ресурс {dto.Id} не найден.");
+
+        if (!string.Equals(existing.Name, dto.Name, StringComparison.OrdinalIgnoreCase)
+            && await _repository.ExistsByNameAsync(dto.Name))
+            throw new DuplicateEntryException($"Ресурс с наименованием '{dto.Name}' уже существует.");
+
+        existing.Name = dto.Name;
+        await _repository.UpdateResouceAsync(existing);
     }
 }

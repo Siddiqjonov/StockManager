@@ -51,4 +51,13 @@ public class ReceiptDocumentRepository : IReceiptDocumentRepository
         _context.ReceiptDocuments.Update(receiptDocument);
         await _context.SaveChangesAsync();
     }
+
+    public Task<IEnumerable<ReceiptDocument>> GetAllWithResourcesAsync()
+    {
+        return _context.ReceiptDocuments
+            .Include(r => r.Resources)
+            .AsNoTracking()
+            .ToListAsync()
+            .ContinueWith(task => (IEnumerable<ReceiptDocument>)task.Result);
+    }
 }
