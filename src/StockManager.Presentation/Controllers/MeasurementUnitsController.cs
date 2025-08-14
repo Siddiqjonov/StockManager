@@ -6,7 +6,7 @@ using StockManager.Application.Services.Measurement;
 
 namespace StockManager.Presentation.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/measurementUnit")]
 [ApiController]
 public class MeasurementUnitsController : ControllerBase
 {
@@ -32,7 +32,7 @@ public class MeasurementUnitsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] MeasurementUnitCreateDto dto)
     {
         var id = await _unitService.CreateAsync(dto);
