@@ -6,16 +6,34 @@ import { ShipmentComponent } from './components/shipment/shipment.component';
 import { ClientComponent } from './components/client/client.component';
 import { MeasurementUnitComponent } from './components/measurement-unit/measurement-unit.component';
 import { ResourcesComponent } from './components/resources/resources.component';
+import { MainLayoutComponent } from './components/main-layout/main-layout.component';
+
+// const routes: Routes = [
+//   {path: '', component: BalanceComponent, pathMatch: 'full'},
+//   {path: 'recipts', component: ReceiptComponent},
+//   {path: 'shipments', component: ShipmentComponent},
+//   {path: 'clients', component: ClientComponent},
+//   {path: 'measurement-unit', component: MeasurementUnitComponent},
+//   {path: 'resources', component: ResourcesComponent},
+//   {path: '**', redirectTo: ''},
+// ];
 
 const routes: Routes = [
-  {path: '', component: BalanceComponent, pathMatch: 'full'},
-  {path: 'recipts', component: ReceiptComponent},
-  {path: 'shipments', component: ShipmentComponent},
-  {path: 'clients', component: ClientComponent},
-  {path: 'measurement-unit', component: MeasurementUnitComponent},
-  {path: 'resources', component: ResourcesComponent},
-  {path: '**', redirectTo: ''},
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      { path: '', component: BalanceComponent, pathMatch: 'full' },
+      { path: 'recipts', component: ReceiptComponent },
+      { path: 'shipments', component: ShipmentComponent },
+      { path: 'clients', component: ClientComponent },
+      { path: 'measurement-unit', component: MeasurementUnitComponent },
+      { path: 'resources', component: ResourcesComponent },
+      { path: '**', redirectTo: '' }
+    ]
+  }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

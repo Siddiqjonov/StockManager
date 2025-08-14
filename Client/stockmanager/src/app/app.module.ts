@@ -9,6 +9,7 @@ import { ShipmentComponent } from './components/shipment/shipment.component';
 import { ClientComponent } from './components/client/client.component';
 import { MeasurementUnitComponent } from './components/measurement-unit/measurement-unit.component';
 import { ResourcesComponent } from './components/resources/resources.component';
+import { MainLayoutComponent } from './components/main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ResourcesComponent } from './components/resources/resources.component';
     ShipmentComponent,
     ClientComponent,
     MeasurementUnitComponent,
-    ResourcesComponent
+    ResourcesComponent,
+    MainLayoutComponent
   ],
   imports: [
     BrowserModule,

@@ -39,7 +39,18 @@ public static class Mapper
         return new ReceiptDocument
         {
             Number = dto.Number,
-            Date = dto.Date
+            Date = dto.Date,
+            Resources = dto.Resources.Select(r => MapToReceiptResourceFromReceiptResourceCreateDto(r)).ToList(),
+        };
+    }
+    
+    private static ReceiptResource MapToReceiptResourceFromReceiptResourceCreateDto(ReceiptResourceCreateDto dto)
+    {
+        return new ReceiptResource()
+        {
+            ResourceId = dto.ResourceId,
+            MeasurementUnitId = dto.MeasurementUnitId,
+            Quantity = dto.Quantity,
         };
     }
 
